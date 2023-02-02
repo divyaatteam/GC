@@ -20,7 +20,7 @@ imports:
     name: project.py
 
 resources:
-  - name: <FIXME:project_name>
+  - name: test
     type: project.py
     properties:
       parent:
