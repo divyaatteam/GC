@@ -1,0 +1,56 @@
+name: Build and push new dev tools image
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - "infra/build/**"
+      - ".github/workflows/build-push-cft-devtools.yml"
+env:
+  PROJECT_ID: ${{ secrets.GCR_PROJECT_ID }}
+
+jobs:
+  build-push-dev-tools:
+    name: Build and push new CFT dev tools image
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1.0.0'
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WIF_PROVIDER }}'
+          service_account: '${{ secrets.GCP_WIF_SA_EMAIL }}'
+
+      - uses: google-github-actions/setup-gcloud@v1.0.1
+        with:
+          version: "410.0.0"
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Build
+        run: |-
+          gcloud auth configure-docker -q
+          cd infra/build && make build-image-developer-tools
+
+      - name: Push
+        run: |-
+          cd infra/build && make release-image-developer-tools
+
+      - name: Open issue if failed
+        if: ${{ failure() }}
+        uses: actions/github-script@v6.3.3
+        with:
+          script: |-
+              github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: 'build-push-dev-tools job failed',
+                  body: 'Logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
+                  assignee: 'bharathkkb'
+                })
