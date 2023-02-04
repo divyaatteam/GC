@@ -3,7 +3,7 @@
 # In this example, a project is created, along with some of the
 # resources that an enterprise is likely to need for regular operations.
 #
-# Note that the `parent.type` property defaults to "organization", so it
+# Note that the `parent.type` property defaults to 'organization', so it
 # does not need to be specified in the config. It is specified here for
 # informational purposes.
 #
@@ -20,12 +20,12 @@ imports:
     name: project.py
 
 resources:
-  - name: <FIXME:project_name>
+  - name: test
     type: project.py
     properties:
       parent:
         type: organization
-        id: <FIXME:org_id>
+        id: test-test2
       billingAccountId: <FIXME:billing_id>
       activateApis:
         - compute.googleapis.com
