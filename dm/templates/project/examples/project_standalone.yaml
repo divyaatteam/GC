@@ -25,7 +25,7 @@ resources:
     properties:
       parent:
         type: organization
-        id: divya-test2
+        id: reenadiv-testreena
       billingAccountId: <FIXME:billing_id>
       activateApis:
         - compute.googleapis.com
