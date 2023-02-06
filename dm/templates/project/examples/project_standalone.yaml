@@ -25,7 +25,7 @@ resources:
     properties:
       parent:
         type: organization
-        id: reenadiv-testreena
+        id: ajithtest-testlname
       billingAccountId: <FIXME:billing_id>
       activateApis:
         - compute.googleapis.com
